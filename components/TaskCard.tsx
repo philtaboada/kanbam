@@ -10,7 +10,7 @@ interface TaskCardProps {
 
 export default function TaskCard({ task, index, onEdit }: TaskCardProps) {
   return (
-    <Draggable draggableId={task.id} index={index}>
+    <Draggable draggableId={task._id || ''} index={index}>
       {(provided) => (
         <div
           onClick={onEdit}
