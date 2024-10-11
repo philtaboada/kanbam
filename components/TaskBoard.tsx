@@ -38,10 +38,8 @@ export default function TaskBoard() {
   }
 
   const handleAddTask = (newTask: ITask) => {
-
-    const newId = Date.now().toString();
     const newTaskId = generateTaskId();
-    setTasks([...tasks, { ...newTask, _id: newId, taskId: newTaskId }]);
+    setTasks([...tasks, { ...newTask, taskId: newTaskId }]);
     createTask({...newTask, taskId: newTaskId});
     setIsModalOpen(false);
   };

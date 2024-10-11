@@ -22,7 +22,6 @@ export default function TaskModal({ onClose, onSubmit, task, generateTaskId }: T
       return task;
     } else {
       return {
-        _id: '',
         taskId: generateTaskId(),
         description: '',
         assignee: '',
@@ -62,22 +61,24 @@ export default function TaskModal({ onClose, onSubmit, task, generateTaskId }: T
           <DialogTitle>{task ? 'Edit Task' : 'Add New Task'}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="flex items-center space-x-2">
-            <Label htmlFor="taskId">Task ID</Label>
-            <Input
-              id="taskId"
-              name="taskId"
-              value={formData.taskId}
-              onChange={handleChange}
-              disabled
-              className="flex-grow"
-            />
-            {task ?
+          {task ?
+            <div className="flex items-center space-x-2">
+              <Label htmlFor="taskId">Task ID</Label>
+              <Input
+                id="taskId"
+                name="taskId"
+                value={formData.taskId}
+                onChange={handleChange}
+                disabled
+                className="flex-grow"
+              />
+
               <Button type="button" onClick={copyTaskId} className="p-2 bg-black text-white hover:bg-gray-700 active:bg-gray-500 focus:outline-none">
                 <CopyIcon className="h-4 w-4" />
-              </Button> : null
-            }
-          </div>
+              </Button>
+            </div>
+            : null
+          }
           <div>
             <Label htmlFor="description">Description</Label>
             <Input id="description" name="description" value={formData.description} onChange={handleChange} required />
