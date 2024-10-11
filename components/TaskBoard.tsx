@@ -1,12 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import TaskColumn from './TaskColumn';
 import TaskModal from './TaskModal';
 import { ITask } from '@/lib/types';
+import { createTask, getTasks, updateTask } from '@/services/scrumApi';
 
 const columns = [
   { id: 'not-started', title: 'Not started', color: 'bg-gray-200' },
@@ -14,24 +15,41 @@ const columns = [
   { id: 'done', title: 'Done', color: 'bg-green-100' },
 ];
 
-const initialTasks: ITask[] = [
-  { id: '1', taskId: 'TASK-001', description: 'Create project plan', assignee: 'John Doe', status: 'not-started', priority: 'high' },
-  { id: '2', taskId: 'TASK-002', description: 'Design UI mockups', assignee: 'Jane Smith', status: 'in-progress', priority: 'medium' },
-  { id: '3', taskId: 'TASK-003', description: 'Implement login functionality', assignee: 'Bob Johnson', status: 'done', priority: 'low' },
-];
 
 export default function TaskBoard() {
-  const [tasks, setTasks] = useState<ITask[]>(initialTasks);
+  const [tasks, setTasks] = useState<ITask[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
+  const [lastTaskId, setLastTaskId] = useState(0);
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      const initialTasks = await getTasks();
+      setTasks(initialTasks);
+    };
+    fetchTasks();
+
+  }, []);
+
+  const generateTaskId = () => {
+    const newId = lastTaskId + 1;
+    setLastTaskId(newId);
+    return `fth-${newId.toString().padStart(4, '0')}`;
+  }
 
   const handleAddTask = (newTask: ITask) => {
-    setTasks([...tasks, { ...newTask, id: Date.now().toString() }]);
+
+    const newId = Date.now().toString();
+    const newTaskId = generateTaskId();
+    setTasks([...tasks, { ...newTask, _id: newId, taskId: newTaskId }]);
+    createTask({...newTask, taskId: newTaskId});
     setIsModalOpen(false);
   };
 
   const handleEditTask = (updatedTask: ITask) => {
-    setTasks(tasks.map(task => task.id === updatedTask.id ? updatedTask : task));
+    setTasks(tasks.map(task => task._id === updatedTask._id ? updatedTask : task));
+    console.log('updatedTask', updatedTask);
+    updateTask(updatedTask);
     setIsModalOpen(false);
     setSelectedTask(null);
   };
@@ -56,7 +74,7 @@ export default function TaskBoard() {
     }
 
     const updatedTasks = tasks.map(task => {
-      if (task.id === draggableId) {
+      if (task._id === draggableId) {
         return { ...task, status: destination.droppableId as ITask['status'] };
       }
       return task;
@@ -69,7 +87,7 @@ export default function TaskBoard() {
     <DragDropContext onDragEnd={onDragEnd}>
       <div>
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-semibold">CRM App</h2>
+          <h2 className="text-2xl font-semibold">JLH Board</h2>
           <Button onClick={() => setIsModalOpen(true)}>
             <Plus className="mr-2 h-4 w-4" /> New Task
           </Button>
@@ -94,6 +112,7 @@ export default function TaskBoard() {
             }}
             onSubmit={selectedTask ? handleEditTask : handleAddTask}
             task={selectedTask}
+            generateTaskId={generateTaskId}
           />
         )}
       </div>

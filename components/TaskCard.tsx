@@ -13,6 +13,7 @@ export default function TaskCard({ task, index, onEdit }: TaskCardProps) {
     <Draggable draggableId={task.id} index={index}>
       {(provided) => (
         <div
+          onClick={onEdit}
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
@@ -21,9 +22,7 @@ export default function TaskCard({ task, index, onEdit }: TaskCardProps) {
           <h4 className="font-medium">{task.description}</h4>
           <p className="text-sm text-gray-500">Assignee: {task.assignee}</p>
           <p className="text-sm text-gray-500">Priority: {task.priority}</p>
-          <Button variant="outline" size="sm" className="mt-2" onClick={onEdit}>
-            Edit
-          </Button>
+
         </div>
       )}
     </Draggable>

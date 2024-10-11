@@ -7,21 +7,29 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ITask } from '@/lib/types';
+import { CopyIcon } from 'lucide-react';
 
 interface TaskModalProps {
   onClose: () => void;
   onSubmit: (task: ITask) => void;
   task?: ITask | null;
+  generateTaskId: () => string;
 }
 
-export default function TaskModal({ onClose, onSubmit, task }: TaskModalProps) {
-  const [formData, setFormData] = useState<ITask>({
-    id: '',
-    taskId: '',
-    description: '',
-    assignee: '',
-    status: 'not-started',
-    priority: 'medium',
+export default function TaskModal({ onClose, onSubmit, task, generateTaskId }: TaskModalProps) {
+  const [formData, setFormData] = useState<ITask>(() => {
+    if (task) {
+      return task;
+    } else {
+      return {
+        _id: '',
+        taskId: generateTaskId(),
+        description: '',
+        assignee: '',
+        status: 'not-started' as const,
+        priority: 'low' as const,
+      };
+    }
   });
 
   useEffect(() => {
@@ -43,6 +51,10 @@ export default function TaskModal({ onClose, onSubmit, task }: TaskModalProps) {
     onSubmit(formData);
   };
 
+  const copyTaskId = () => {
+    navigator.clipboard.writeText(formData.taskId);
+  };
+
   return (
     <Dialog open={true} onOpenChange={onClose}>
       <DialogContent>
@@ -50,9 +62,21 @@ export default function TaskModal({ onClose, onSubmit, task }: TaskModalProps) {
           <DialogTitle>{task ? 'Edit Task' : 'Add New Task'}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
+          <div className="flex items-center space-x-2">
             <Label htmlFor="taskId">Task ID</Label>
-            <Input id="taskId" name="taskId" value={formData.taskId} onChange={handleChange} required />
+            <Input
+              id="taskId"
+              name="taskId"
+              value={formData.taskId}
+              onChange={handleChange}
+              disabled
+              className="flex-grow"
+            />
+            {task ?
+              <Button type="button" onClick={copyTaskId} className="p-2 bg-black text-white hover:bg-gray-700 active:bg-gray-500 focus:outline-none">
+                <CopyIcon className="h-4 w-4" />
+              </Button> : null
+            }
           </div>
           <div>
             <Label htmlFor="description">Description</Label>

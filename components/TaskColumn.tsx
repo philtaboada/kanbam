@@ -22,7 +22,7 @@ export default function TaskColumn({ id, title, tasks, color, onEditTask }: Task
             className="space-y-2 min-h-[200px]"
           >
             {tasks.map((task, index) => (
-              <TaskCard key={task.id} task={task} index={index} onEdit={() => onEditTask(task)} />
+              <TaskCard key={task._id} task={task} index={index} onEdit={() => onEditTask(task)} />
             ))}
             {provided.placeholder}
           </div>
