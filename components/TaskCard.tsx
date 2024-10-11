@@ -1,6 +1,5 @@
 import { Draggable } from 'react-beautiful-dnd';
 import { ITask } from '@/lib/types';
-import { Button } from '@/components/ui/button';
 
 interface TaskCardProps {
   task: ITask;
@@ -10,7 +9,7 @@ interface TaskCardProps {
 
 export default function TaskCard({ task, index, onEdit }: TaskCardProps) {
   return (
-    <Draggable draggableId={task.taskId ?? ''} index={index}>
+    <Draggable draggableId={task.taskId} index={index}>
       {(provided) => (
         <div
           onClick={onEdit}
