@@ -12,6 +12,7 @@ import { createTask, getTasks, updateTask } from '@/services/scrumApi';
 const columns = [
   { id: 'not-started', title: 'Not started', color: 'bg-gray-200' },
   { id: 'in-progress', title: 'In progress', color: 'bg-blue-100' },
+  { id: 'testing', title: 'Testing', color: 'bg-yellow-100' },
   { id: 'done', title: 'Done', color: 'bg-green-100' },
 ];
 
@@ -90,7 +91,7 @@ export default function TaskBoard() {
             <Plus className="mr-2 h-4 w-4" /> New Task
           </Button>
         </div>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-4 gap-4">
           {columns.map((column) => (
             <TaskColumn
               key={column.id}

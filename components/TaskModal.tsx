@@ -96,6 +96,7 @@ export default function TaskModal({ onClose, onSubmit, task, generateTaskId }: T
               <SelectContent>
                 <SelectItem value="not-started">Not started</SelectItem>
                 <SelectItem value="in-progress">In progress</SelectItem>
+                <SelectItem value="testing">Testing</SelectItem>
                 <SelectItem value="done">Done</SelectItem>
               </SelectContent>
             </Select>
