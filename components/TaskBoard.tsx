@@ -84,7 +84,7 @@ export default function TaskBoard() {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div>
+      <div className="relative">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-semibold">JLH Board</h2>
           <Button onClick={() => setIsModalOpen(true)}>

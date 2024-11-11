@@ -2,7 +2,6 @@ import api from './api';
 import { ITask } from '@/lib/types';
 
 export const getTasks = async () => {
-
   const response = await api.get('/scrum');
   return response.data;
 };
