@@ -35,8 +35,8 @@ const FilterTable = () => {
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="all">All</SelectItem>
-          <SelectItem value="todo">To Do</SelectItem>
-          <SelectItem value="inProgress">In Progress</SelectItem>
+          <SelectItem value="not-started">Not started</SelectItem>
+          <SelectItem value="in-progress">In Progress</SelectItem>
           <SelectItem value="testing">Testing</SelectItem>
           <SelectItem value="done">Done</SelectItem>
         </SelectContent>
