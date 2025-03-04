@@ -16,12 +16,11 @@ export default function TaskCard({ task, index, onEdit }: TaskCardProps) {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className="bg-white p-3 rounded shadow"
+          className="bg-white p-3 rounded shadow hover:shadow-md transition-shadow"
         >
           <h4 className="font-medium">{task.description}</h4>
           <p className="text-sm text-gray-500">Assignee: {task.assignee}</p>
           <p className="text-sm text-gray-500">Priority: {task.priority}</p>
-
         </div>
       )}
     </Draggable>

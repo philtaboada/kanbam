@@ -17,25 +17,24 @@ interface TaskModalProps {
 }
 
 export default function TaskModal({ onClose, onSubmit, task, generateTaskId }: TaskModalProps) {
-  const [formData, setFormData] = useState<ITask>(() => {
-    if (task) {
-      return task;
-    } else {
-      return {
-        taskId: generateTaskId(),
-        description: '',
-        assignee: '',
-        status: 'not-started' as const,
-        priority: 'low' as const,
-      };
-    }
+  const [formData, setFormData] = useState<ITask>({
+    taskId: task?.taskId || '',
+    description: task?.description || '',
+    assignee: task?.assignee || '',
+    status: task?.status || 'not-started',
+    priority: task?.priority || 'low',
   });
 
   useEffect(() => {
-    if (task) {
+    if (!task && !formData.taskId) {
+      setFormData(prev => ({
+        ...prev,
+        taskId: generateTaskId()
+      }));
+    } else if (task) {
       setFormData(task);
     }
-  }, [task]);
+  }, [task, generateTaskId]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -89,7 +88,11 @@ export default function TaskModal({ onClose, onSubmit, task, generateTaskId }: T
           </div>
           <div>
             <Label htmlFor="status">Status</Label>
-            <Select name="status" value={formData.status} onValueChange={(value) => handleSelectChange('status', value)}>
+            <Select 
+              name="status" 
+              value={formData.status} 
+              onValueChange={(value: ITask['status']) => handleSelectChange('status', value)}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Select status" />
               </SelectTrigger>
@@ -103,7 +106,11 @@ export default function TaskModal({ onClose, onSubmit, task, generateTaskId }: T
           </div>
           <div>
             <Label htmlFor="priority">Priority</Label>
-            <Select name="priority" value={formData.priority} onValueChange={(value) => handleSelectChange('priority', value)}>
+            <Select 
+              name="priority" 
+              value={formData.priority} 
+              onValueChange={(value: ITask['priority']) => handleSelectChange('priority', value)}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Select priority" />
               </SelectTrigger>

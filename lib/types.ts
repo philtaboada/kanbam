@@ -3,6 +3,6 @@ export interface ITask {
   taskId: string;
   description: string;
   assignee: string;
-  status: 'not-started' | 'in-progress' | 'done';
+  status: 'not-started' | 'in-progress' | 'testing' | 'done';
   priority: 'low' | 'medium' | 'high';
 }

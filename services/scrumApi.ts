@@ -21,3 +21,8 @@ export const updateTask = async (task: ITask) => {
   console.log('response', response);
   return response.data;
 };
+
+export const getLastTask = async () => {
+  const response = await api.get('/scrum/last-task');
+  return response.data;
+};
